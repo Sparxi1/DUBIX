@@ -1,0 +1,25 @@
+services:
+  desktop-dubix:
+    build: .
+    container_name: desktop-dubix
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+      - TITLE=Dubix Desktop
+      - CUSTOM_USER=dubix
+      - PASSWORD=${DESKTOP_DUBIX_PASSWORD}
+      - LANG=de_AT.UTF-8
+    volumes:
+      - desktop-dubix-config:/config
+    ports:
+      - "127.0.0.1:3010:3000"   # HTTP (noVNC/KasmVNC) - only bound to localhost, exposed via Cloudflare Tunnel
+    shm_size: "1gb"
+    mem_limit: 2g
+    mem_reservation: 512m
+    cpus: 2.0
+
+volumes:
+  desktop-dubix-config:
+    name: desktop-dubix-config
